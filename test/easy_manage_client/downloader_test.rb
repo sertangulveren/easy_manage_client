@@ -29,13 +29,9 @@ module EasyManageClient
     end
 
     def test_full_file_path_must_be_include_reference
-      configure_compiled_version_profile
-      @downloader = ::EasyManageClient::Downloader.new(profile: :powderduction)
-      genarete_request_stub_for(
-        ::EasyManageClient.configuration(:powderduction).root_url,
-        @downloader.request_uri,
-        ::EasyManageClient.configuration(:powderduction).extension
-      )
+      genarete_request_stub_for(::EasyManageClient.configuration.root_url,
+                                @downloader.request_uri,
+                                ::EasyManageClient.configuration.extension)
 
       assert @downloader.perform
 
