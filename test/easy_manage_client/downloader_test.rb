@@ -28,6 +28,34 @@ module EasyManageClient
       assert @downloader.perform
     end
 
+    def test_full_file_path_must_be_include_reference
+      configure_compiled_version_profile
+      @downloader = ::EasyManageClient::Downloader.new(profile: :powderduction)
+      genarete_request_stub_for(
+        ::EasyManageClient.configuration(:powderduction).root_url,
+        @downloader.request_uri,
+        ::EasyManageClient.configuration(:powderduction).extension
+      )
+
+      assert @downloader.perform
+
+      assert @downloader.prepare_file_path_to_download
+                        .include?(@downloader.response[:reference])
+    end
+
+    def test_downloaded_file_must_be_exists
+      configure_compiled_version_profile
+      @downloader = ::EasyManageClient::Downloader.new(profile: :powderduction)
+      genarete_request_stub_for(
+        ::EasyManageClient.configuration(:powderduction).root_url,
+        @downloader.request_uri,
+        ::EasyManageClient.configuration(:powderduction).extension
+      )
+
+      assert @downloader.perform
+      assert File.exist?(@downloader.prepare_file_path_to_download)
+    end
+
     def test_request_must_be_time_out
       genarete_timeout_stub_for(::EasyManageClient.configuration.root_url,
                                 @downloader.request_uri,
