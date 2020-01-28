@@ -35,11 +35,15 @@ module EasyManageClient
     end
 
     def write_to_folder
+      File.open(prepare_file_path_to_download, 'w') do |file|
+        file.write(response[:content])
+      end
+    end
+
+    def prepare_file_path_to_download
       folder = ::EasyManageClient.configuration(profile).download_folder
       extension = ::EasyManageClient.configuration(profile).extension
-      file_name = "#{response[:reference]}.#{extension}"
-      file_full_path = File.join(folder, file_name)
-      File.open(file_full_path, 'w') { |file| file.write(response[:content]) }
+      File.join(folder, "#{response[:reference]}.#{extension}")
     end
   end
 end
