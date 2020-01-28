@@ -8,12 +8,7 @@ namespace :easy_manage_client do
     puts "EasyManageClient running for: #{profile}"
     downloader = ::EasyManageClient::Downloader.new(profile: profile)
     puts "EasyManageClient processing for: #{profile}"
-    downloader.perform
-    if downloader.success
-      puts "EasyManageClient process successfully completed for: #{profile}"
-    else
-      raise ::EasyManageClient::DownloadProcessFailed,
-            downloader.response[:message]
-    end
+    downloader.perform!
+    puts "EasyManageClient process successfully completed for: #{profile}"
   end
 end

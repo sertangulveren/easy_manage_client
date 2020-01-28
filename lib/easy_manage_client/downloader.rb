@@ -25,6 +25,15 @@ module EasyManageClient
       true
     end
 
+    def perform!
+      perform
+      unless success
+        raise ::EasyManageClient::DownloadProcessFailed, response[:message]
+      end
+
+      true
+    end
+
     def compiled_version_uri
       '/api/projects/by_reference/' +
         ::EasyManageClient.configuration(profile).compile_id.to_s
