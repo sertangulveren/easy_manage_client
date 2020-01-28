@@ -5,7 +5,7 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/**/*.[yml, json]
+/tmp/*[.yml, .json]
 Gemfile.lock
 .env
 .byebug_history
