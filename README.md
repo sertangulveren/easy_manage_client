@@ -1,8 +1,8 @@
 # EasyManageClient [![Build Status](https://travis-ci.org/sertangulveren/easy_manage_client.svg?branch=master)](https://travis-ci.org/sertangulveren/easy_manage_client)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/easy_manage_client`. To experiment with that code, run `bin/console` for an interactive prompt.
+This client allows you to download compiled dumps in JSON or YAML format, such as translation, configuration etc. on EasyManage server to your project easly.
 
-TODO: Delete this and the text above, and describe your gem
+It is recommended to use at the projects initial stage.
 
 ## Installation
 
@@ -20,17 +20,89 @@ Or install it yourself as:
 
     $ gem install easy_manage_client
 
+## Configuration
+
+Client must be configured before use. Configuration fields are as:
+
+| Field           | Description                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
+| root_url        | Root url of the EasyManage server.                                                                      |
+| auth_token      | Your 2.0 authentication token string without the 'Bearer'.                                              |
+| extension       | Dump format. Available values: 'json', 'yml'                                                            |
+| download_folder | Information to which folder the dump will be downloaded.                                                |
+| compile_id      | The id of the compiled version. If not passed, the client always downloads the latest compiled dump.    |
+
+### Configuration on Rails Application:
+Create a file in the `config/initializers` directory and configure client in this file as below:
+`# config/initializers/easy_manage_client.rb`
+```ruby
+EasyManageClient.configure do |config|
+  config.root_url = 'https://easymanage.example.com'
+  config.auth_token = 'YOUR_SECRET_AUTH_TOKEN'
+  config.extension = 'yml'
+  config.download_folder = File.join(Rails.root, 'config', 'translations')
+  config.compile_id = 'SPECIAL_COMPILED_VERSION_ID'
+end
+```
+### Multiple Configuration
+You can define multiple configurations separated by profile. To do this, you must pass the profile parameter to the `configure` definition.
+If the profile name is not pass in the configuration, it defaults to use `:default`.
+##### Example:
+In this example, to download dynamicly application settings, profile name specified as `settings`.
+`# config/initializers/dynamic_settings.rb`
+```ruby
+EasyManageClient.configure(:dynamic_settings) do |config|
+  config.root_url = 'https://easymanage.example.com'
+  config.auth_token = 'YOUR_SECRET_AUTH_TOKEN'
+  config.extension = 'json'
+  config.download_folder = File.join(Rails.root, 'config', 'settings')
+end
+```
 ## Usage
+Initialize a client object before starting process.
+```ruby
+client = EasyManageClient::Downloader.new
+```
+To download compiled dump, call the method `perform`.
+The client downloads the compiled version to the directory specified in the configuration, in the specified format.
+In this case, client uses the folder: `File.join(Rails.root, 'config', 'translations')`.
+```ruby
+client.perform
+```
 
-TODO: Write usage instructions here
+> In case of an unsuccessful download; `perform!` can be used instead of `perform` for error exception. This method creates an `EasyManageClient::DownloadProcessFailed` exception.
 
-## Development
+You can pass the profile argument on client initialization to use different configuration.
+```ruby
+client = EasyManageClient::Downloader.new(profile: :dynamic_settings)
+client.perform
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+If the download process will be performed only in the Rails initialization, the following method can be used:
+`# config/initializers/easy_manage_client.rb`
+```ruby
+EasyManageClient.configure(:dummy_profile) do |config|
+  config.root_url = 'https://easymanage.example.com'
+  config.auth_token = 'YOUR_SECRET_AUTH_TOKEN'
+  config.extension = 'yml'
+  config.download_folder = File.join(Rails.root, 'config', 'settings')
+end
+client = EasyManageClient::Downloader.new(profile: :dummy_profile)
+client.perform!
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Using Rake Tasks
+The client has its own rake tasks.
+This feature can be used in configurations such as CI configurations, Dockerfile etc.
 
+Use rake task to download your compiled dump as below:
+
+`rake easy_manage_client:download`
+
+Pass profile to rake task:
+
+`easy_manage_client:download PROFILE=dummy_settings`
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/easy_manage_client.
+Bug reports and pull requests are welcome on GitHub at https://github.com/sertangulveren/easy_manage_client.
 
