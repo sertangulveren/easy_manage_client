@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 require 'faraday'
 require 'easy_manage_client/version'
 require 'easy_manage_client/configuration'
