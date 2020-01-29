@@ -20,7 +20,7 @@ def configure_default_profile
   ::EasyManageClient.configure do |config|
     config.root_url = 'https://easymanage.example.com'
     config.auth_token = TEST_AUTH_TOKEN # defined in test_helper.rb
-    config.extension = 'yml'
+    config.extension = 'yaml'
     # config.download_folder = "#{Rails.root}/config/translations"
     config.download_folder = File.join(Dir.pwd, 'tmp')
   end
@@ -31,7 +31,7 @@ def configure_compiled_version_profile
   ::EasyManageClient.configure(:powderduction) do |config|
     config.root_url = 'https://easymanage.example.com'
     config.auth_token = TEST_AUTH_TOKEN # defined in test_helper.rb
-    config.extension = 'yml'
+    config.extension = 'yaml'
     config.download_folder = File.join(Dir.pwd, 'tmp')
     config.compile_id = '5e0799592444960017069ef1'
   end
