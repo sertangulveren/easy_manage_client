@@ -40,14 +40,19 @@ module EasyManageClient
 
   # Configuration class
   class Configuration
-    EXTENSION_TYPES = %w[yml json].freeze
+    EXTENSION_TYPES = %w[yaml json].freeze
+    FILE_EXTENSION_TYPES = { 'yaml' => 'yml', 'json' => 'json' }.freeze
 
     attr_accessor :profile, :root_url, :auth_token, :extension, :compile_id,
                   :download_folder
 
     def initialize
       self.profile = :default
-      self.extension = 'yml'
+      self.extension = 'yaml'
+    end
+
+    def file_extension
+      FILE_EXTENSION_TYPES[extension]
     end
 
     def check!
