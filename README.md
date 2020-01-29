@@ -34,6 +34,7 @@ Client must be configured before use. Configuration fields are as:
 
 ### Configuration on Rails Application:
 Create a file in the `config/initializers` directory and configure client in this file as below:
+
 `# config/initializers/easy_manage_client.rb`
 ```ruby
 EasyManageClient.configure do |config|
