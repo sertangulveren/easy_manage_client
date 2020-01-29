@@ -17,7 +17,7 @@ module EasyManageClient
     end
 
     def test_config_extension_must_be_correct
-      assert_equal 'yml', ::EasyManageClient.configuration.extension
+      assert_equal 'yaml', ::EasyManageClient.configuration.extension
     end
 
     def test_config_profile_must_be_correct
