@@ -28,7 +28,7 @@ Client must be configured before use. Configuration fields are as:
 | --------------- | ------------------------------------------------------------------------------------------------------- |
 | root_url        | Root url of the EasyManage server.                                                                      |
 | auth_token      | Your 2.0 authentication token string without the 'Bearer'.                                              |
-| extension       | Dump format. Available values: 'json', 'yml'                                                            |
+| extension       | Dump format. Available values: 'json', 'yaml'                                                            |
 | download_folder | Information to which folder the dump will be downloaded.                                                |
 | compile_id      | The id of the compiled version. If not passed, the client always downloads the latest compiled dump.    |
 
@@ -39,7 +39,7 @@ Create a file in the `config/initializers` directory and configure client in thi
 EasyManageClient.configure do |config|
   config.root_url = 'https://easymanage.example.com'
   config.auth_token = 'YOUR_SECRET_AUTH_TOKEN'
-  config.extension = 'yml'
+  config.extension = 'yaml'
   config.download_folder = File.join(Rails.root, 'config', 'translations')
   config.compile_id = 'SPECIAL_COMPILED_VERSION_ID'
 end
@@ -84,7 +84,7 @@ If the download process will be performed only in the Rails initialization, the 
 EasyManageClient.configure(:dummy_profile) do |config|
   config.root_url = 'https://easymanage.example.com'
   config.auth_token = 'YOUR_SECRET_AUTH_TOKEN'
-  config.extension = 'yml'
+  config.extension = 'yaml'
   config.download_folder = File.join(Rails.root, 'config', 'settings')
 end
 client = EasyManageClient::Downloader.new(profile: :dummy_profile)
@@ -99,9 +99,9 @@ Use rake task to download your compiled dump as below:
 
 `rake easy_manage_client:download`
 
-Pass profile to rake task:
+Pass profile to rake task via environment variable:
 
-`easy_manage_client:download PROFILE=dummy_settings`
+`rake easy_manage_client:download EASY_MANAGE_PROFILE=dummy_settings`
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/sertangulveren/easy_manage_client.
