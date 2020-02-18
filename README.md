@@ -34,6 +34,7 @@ Client must be configured before use. Configuration fields are as:
 
 ### Configuration on Rails Application:
 Create a file in the `config/initializers` directory and configure client in this file as below:
+
 `# config/initializers/easy_manage_client.rb`
 ```ruby
 EasyManageClient.configure do |config|
@@ -49,6 +50,7 @@ You can define multiple configurations separated by profile. To do this, you mus
 If the profile name is not pass in the configuration, it defaults to use `:default`.
 ##### Example:
 In this example, to download dynamicly application settings, profile name specified as `settings`.
+
 `# config/initializers/dynamic_settings.rb`
 ```ruby
 EasyManageClient.configure(:dynamic_settings) do |config|
